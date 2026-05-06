@@ -36,15 +36,6 @@
     "mdFile": "DeviceServer.md"
   },
   {
-    "id": "projects-index",
-    "name": "项目索引",
-    "badge": "个人项目",
-    "badgeType": "personal",
-    "summary": "projects 文件夹内文档的索引与快速跳转入口。",
-    "tech": ["索引", "Markdown"],
-    "mdFile": "INDEX.md"
-  },
-  {
     "id": "astar-pathfinding",
     "name": "A* 寻路",
     "badge": "个人项目",
