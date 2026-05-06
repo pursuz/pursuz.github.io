@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全部项目 — PURSUZ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #0f1019;
+            --bg-card: rgba(15, 17, 30, 0.85);
+            --accent-cyan: #00f0ff;
+            --accent-blue: #3d5afe;
+            --accent-purple: #7c4dff;
+            --accent-pink: #ff4081;
+            --accent-green: #00e676;
+            --text-primary: #e8eaf6;
+            --text-secondary: #9fa8da;
+            --text-dim: #5c6bc0;
+            --border-glow: rgba(0, 240, 255, 0.15);
+            --glass: rgba(15, 17, 30, 0.6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-cyan) var(--bg-primary);
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* ====== Canvas Background ====== */
+        #particle-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ====== Grid Overlay ====== */
+        .grid-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Scanline */
+        .scanline {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 240, 255, 0.008) 2px,
+                rgba(0, 240, 255, 0.008) 4px
+            );
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Cursor glow */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,240,255,0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            transition: left 0.1s, top 0.1s;
+        }
+
+        /* ====== Navigation ====== */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 15, 0.8);
+            border-bottom: 1px solid var(--border-glow);
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 20px rgba(0,240,255,0.4);
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            padding: 6px 16px;
+            border: 1px solid rgba(0,240,255,0.12);
+            border-radius: 6px;
+            background: rgba(0,240,255,0.03);
+        }
+
+        .nav-back:hover {
+            color: var(--accent-cyan);
+            border-color: rgba(0,240,255,0.3);
+            background: rgba(0,240,255,0.06);
+        }
+
+        .nav-back .arrow {
+            transition: transform 0.3s;
+        }
+
+        .nav-back:hover .arrow {
+            transform: translateX(-4px);
+        }
+
+        /* ====== Main Content ====== */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 40px 100px;
+        }
+
+        /* ====== Page Header ====== */
+        .page-header {
+            margin-bottom: 48px;
+        }
+
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            display: inline-block;
+            color: var(--text-primary);
+        }
+
+        .page-title::before {
+            content: '//';
+            color: var(--accent-cyan);
+            margin-right: 12px;
+            font-weight: 400;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            box-shadow: 0 0 12px rgba(0,240,255,0.4);
+        }
+
+        .page-subtitle {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            margin-top: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-count {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-cyan);
+            font-weight: 500;
+            background: rgba(0,240,255,0.06);
+            padding: 2px 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(0,240,255,0.1);
+            font-size: 0.82rem;
+        }
+
+        /* ====== Filter Bar ====== */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 36px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 7px 18px;
+            border: 1px solid rgba(0,240,255,0.15);
+            border-radius: 6px;
+            background: rgba(0,240,255,0.03);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-btn:hover {
+            border-color: rgba(0,240,255,0.3);
+            color: var(--accent-cyan);
+            background: rgba(0,240,255,0.06);
+        }
+
+        .filter-btn.active {
+            border-color: rgba(0,240,255,0.5);
+            color: var(--accent-cyan);
+            background: rgba(0,240,255,0.1);
+            box-shadow: 0 0 12px rgba(0,240,255,0.1);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 9px 16px 9px 38px;
+            border: 1px solid rgba(0,240,255,0.15);
+            border-radius: 6px;
+            background: rgba(0,240,255,0.03);
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-family: 'Noto Sans SC', sans-serif;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .search-box input:focus {
+            border-color: rgba(0,240,255,0.4);
+            background: rgba(0,240,255,0.06);
+            box-shadow: 0 0 16px rgba(0,240,255,0.08);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            pointer-events: none;
+        }
+
+        /* ====== Project Grid ====== */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 32px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .project-card::after {
+            content: '';
+            position: absolute;
+            top: -50%; right: -20%;
+            width: 250px; height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,240,255,0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .project-card:hover {
+            border-color: rgba(0,240,255,0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0,240,255,0.08);
+        }
+
+        .project-card .card-index {
+            position: absolute;
+            top: 16px; right: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: rgba(0,240,255,0.2);
+            letter-spacing: 1px;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .project-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            transition: color 0.3s;
+        }
+
+        .project-card:hover .project-name {
+            color: var(--accent-cyan);
+        }
+
+        .project-badge {
+            font-size: 0.68rem;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .badge-personal {
+            background: rgba(0,230,118,0.1);
+            color: var(--accent-green);
+            border: 1px solid rgba(0,230,118,0.2);
+        }
+
+        .badge-company {
+            background: rgba(124,77,255,0.1);
+            color: var(--accent-purple);
+            border: 1px solid rgba(124,77,255,0.2);
+        }
+
+        .badge-learning {
+            background: rgba(0,240,255,0.1);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(0,240,255,0.2);
+        }
+
+        .badge-competition {
+            background: rgba(255,64,129,0.1);
+            color: var(--accent-pink);
+            border: 1px solid rgba(255,64,129,0.2);
+        }
+
+        .badge-opensource {
+            background: rgba(255,189,46,0.1);
+            color: #ffbd2e;
+            border: 1px solid rgba(255,189,46,0.2);
+        }
+
+        .project-summary {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 18px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .project-tech span {
+            font-size: 0.72rem;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(61,90,254,0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(61,90,254,0.15);
+        }
+
+        .view-detail {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            color: var(--accent-cyan);
+            font-family: 'JetBrains Mono', monospace;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s;
+        }
+
+        .project-card:hover .view-detail {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .view-detail .arrow {
+            transition: transform 0.3s;
+        }
+
+        .project-card:hover .view-detail .arrow {
+            transform: translateX(4px);
+        }
+
+        /* ====== Empty State ====== */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--text-dim);
+        }
+
+        .empty-state .icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 0.92rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ====== Project Detail Overlay ====== */
+        .project-detail-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .project-detail-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .project-detail-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 100px 40px 80px;
+            transform: translateY(30px);
+            transition: transform 0.4s ease;
+        }
+
+        .project-detail-overlay.active .project-detail-container {
+            transform: translateY(0);
+        }
+
+        .detail-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-cyan);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            margin-bottom: 40px;
+            padding: 8px 16px;
+            border: 1px solid rgba(0,240,255,0.2);
+            border-radius: 6px;
+            background: rgba(0,240,255,0.05);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .detail-back:hover {
+            background: rgba(0,240,255,0.1);
+            border-color: rgba(0,240,255,0.4);
+        }
+
+        .detail-back .back-arrow {
+            transition: transform 0.3s;
+        }
+
+        .detail-back:hover .back-arrow {
+            transform: translateX(-4px);
+        }
+
+        /* Markdown rendered content */
+        .md-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 48px;
+            backdrop-filter: blur(10px);
+        }
+
+        .md-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .md-content h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 40px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(0,240,255,0.1);
+            position: relative;
+        }
+
+        .md-content h2::before {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0;
+            width: 40px; height: 2px;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 8px var(--accent-cyan);
+        }
+
+        .md-content h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent-purple);
+            margin-top: 24px;
+            margin-bottom: 10px;
+        }
+
+        .md-content p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.9;
+            margin-bottom: 12px;
+        }
+
+        .md-content ul, .md-content ol {
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .md-content li {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 6px;
+        }
+
+        .md-content ul li::marker {
+            color: var(--accent-cyan);
+        }
+
+        .md-content strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .md-content code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            background: rgba(0,240,255,0.06);
+            color: var(--accent-cyan);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(0,240,255,0.1);
+        }
+
+        .md-content pre {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(0,240,255,0.1);
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+
+        .md-content pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            line-height: 1.7;
+        }
+
+        .md-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.85rem;
+        }
+
+        .md-content th {
+            background: rgba(0,240,255,0.06);
+            color: var(--accent-cyan);
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 16px;
+            border-bottom: 2px solid rgba(0,240,255,0.15);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .md-content td {
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            color: var(--text-secondary);
+        }
+
+        .md-content tr:hover td {
+            background: rgba(0,240,255,0.02);
+        }
+
+        .md-content blockquote {
+            border-left: 3px solid var(--accent-cyan);
+            padding: 12px 20px;
+            margin: 16px 0;
+            background: rgba(0,240,255,0.03);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .md-content blockquote p {
+            color: var(--text-secondary);
+            margin-bottom: 0;
+        }
+
+        .md-content hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,240,255,0.2), transparent);
+            margin: 32px 0;
+        }
+
+        /* Loading */
+        .md-loading {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .md-loading .spinner {
+            width: 40px; height: 40px;
+            border: 2px solid rgba(0,240,255,0.1);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .md-loading p {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ====== Footer ====== */
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid var(--border-glow);
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            margin: 0 12px;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--accent-purple);
+        }
+
+        /* ====== Animations ====== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ====== Responsive ====== */
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; }
+            .main-container { padding: 100px 20px 80px; }
+            .page-title { font-size: 1.5rem; }
+            .project-grid { grid-template-columns: 1fr; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .search-box { min-width: 100%; }
+            .md-content { padding: 28px; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+    <div class="grid-overlay"></div>
+    <div class="scanline"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html" class="nav-logo">&lt;PURSUZ /&gt;</a>
+        <a href="index.html#projects" class="nav-back">
+            <span class="arrow">←</span>
+            <span>返回首页</span>
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="page-header fade-in">
+            <h1 class="page-title">全部项目</h1>
+            <p class="page-subtitle">
+                共收录 <span class="project-count" id="totalCount">0</span> 个项目
+            </p>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar fade-in">
+            <div class="filter-group" id="filterGroup">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="company">🏢 公司项目</button>
+                <button class="filter-btn" data-filter="personal">💡 个人项目</button>
+                <button class="filter-btn" data-filter="learning">📚 学习项目</button>
+            </div>
+            <div class="search-box">
+                <span class="search-icon">⌕</span>
+                <input type="text" id="searchInput" placeholder="搜索项目名称或技术栈...">
+            </div>
+        </div>
+
+        <!-- Project Grid -->
+        <div class="project-grid" id="projectGrid">
+            <!-- JS 动态加载 -->
+        </div>
+    </div>
+
+    <!-- Project Detail Overlay -->
+    <div class="project-detail-overlay" id="projectDetail">
+        <div class="project-detail-container">
+            <a class="detail-back" id="detailBack">
+                <span class="back-arrow">←</span>
+                <span>返回项目列表</span>
+            </a>
+            <div class="md-content" id="mdContent">
+                <div class="md-loading">
+                    <div class="spinner"></div>
+                    <p>加载中...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>
+            <a href="https://github.com/pursuz" target="_blank">GitHub</a>
+            <a href="https://pursuz.blog" target="_blank">技术博客</a>
+            <a href="mailto:746952078@qq.com">Email</a>
+        </p>
+        <p style="margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: rgba(0,240,255,0.3);">
+            &lt;/&gt; Designed by pursuz · 2026
+        </p>
+    </footer>
+
+    <script>
+        // ====== Particle Canvas ======
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: -1000, y: -1000 };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = (Math.random() - 0.5) * 0.3;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.alpha = Math.random() * 0.4 + 0.1;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 150) {
+                    this.x -= dx * 0.01;
+                    this.y -= dy * 0.01;
+                    this.alpha = Math.min(this.alpha + 0.02, 0.8);
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 240, 255, ${this.alpha})`;
+                ctx.fill();
+            }
+        }
+
+        const particleCount = Math.min(80, Math.floor(window.innerWidth / 15));
+        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(0, 240, 255, ${0.08 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            connectParticles();
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // ====== Cursor Glow ======
+        const glow = document.getElementById('cursorGlow');
+        document.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        });
+
+        // ====== Scroll Fade In ======
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // ====== Project Logic ======
+        (function() {
+            const grid = document.getElementById('projectGrid');
+            const overlay = document.getElementById('projectDetail');
+            const mdContent = document.getElementById('mdContent');
+            const backBtn = document.getElementById('detailBack');
+            const totalCountEl = document.getElementById('totalCount');
+            const filterGroup = document.getElementById('filterGroup');
+            const searchInput = document.getElementById('searchInput');
+
+            let allProjects = [];
+            let currentFilter = 'all';
+            let searchTerm = '';
+
+            function renderGrid() {
+                let filtered = allProjects;
+
+                // Filter by type
+                if (currentFilter !== 'all') {
+                    filtered = filtered.filter(p => p.badgeType === currentFilter);
+                }
+
+                // Filter by search
+                if (searchTerm) {
+                    const term = searchTerm.toLowerCase();
+                    filtered = filtered.filter(p =>
+                        p.name.toLowerCase().includes(term) ||
+                        p.summary.toLowerCase().includes(term) ||
+                        p.tech.some(t => t.toLowerCase().includes(term))
+                    );
+                }
+
+                totalCountEl.textContent = filtered.length;
+
+                if (filtered.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state" style="grid-column: 1 / -1;">
+                            <div class="icon">🔍</div>
+                            <p>没有找到匹配的项目</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                grid.innerHTML = filtered.map((p, i) => `
+                    <div class="project-card fade-in" data-id="${p.id}" style="animation-delay: ${i * 0.05}s">
+                        <span class="card-index">#${String(i + 1).padStart(2, '0')}</span>
+                        <div class="project-header">
+                            <div class="project-name">${p.name}</div>
+                            <div class="project-badge badge-${p.badgeType}">${p.badge}</div>
+                        </div>
+                        <div class="project-summary">${p.summary}</div>
+                        <div class="project-tech">
+                            ${p.tech.map(t => `<span>${t}</span>`).join('')}
+                        </div>
+                        <div class="view-detail">
+                            查看详情 <span class="arrow">→</span>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Bind click events
+                grid.querySelectorAll('.project-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const id = card.dataset.id;
+                        const project = allProjects.find(p => p.id === id);
+                        if (project) openDetail(project);
+                    });
+                });
+
+                // Re-observe animations
+                grid.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+            }
+
+            function openDetail(project) {
+                mdContent.innerHTML = `
+                    <div class="md-loading">
+                        <div class="spinner"></div>
+                        <p>加载中...</p>
+                    </div>
+                `;
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                fetch(`projects/${project.mdFile}`)
+                    .then(res => {
+                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                        return res.text();
+                    })
+                    .then(md => {
+                        mdContent.innerHTML = marked.parse(md);
+                        overlay.scrollTop = 0;
+                    })
+                    .catch(err => {
+                        mdContent.innerHTML = `
+                            <div class="md-loading">
+                                <p style="color: var(--accent-pink);">⚠ 加载失败: ${err.message}</p>
+                                <p style="margin-top: 8px;">请确保 projects/${project.mdFile} 文件存在</p>
+                            </div>
+                        `;
+                    });
+            }
+
+            function closeDetail() {
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            backBtn.addEventListener('click', closeDetail);
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) closeDetail();
+            });
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && overlay.classList.contains('active')) closeDetail();
+            });
+
+            // Filter buttons
+            filterGroup.addEventListener('click', e => {
+                const btn = e.target.closest('.filter-btn');
+                if (!btn) return;
+                filterGroup.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderGrid();
+            });
+
+            // Search
+            let searchTimer;
+            searchInput.addEventListener('input', () => {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(() => {
+                    searchTerm = searchInput.value.trim();
+                    renderGrid();
+                }, 200);
+            });
+
+            // Load projects
+            fetch('projects/projects.json')
+                .then(res => {
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    return res.json();
+                })
+                .then(data => {
+                    allProjects = data;
+                    renderGrid();
+                })
+                .catch(err => {
+                    grid.innerHTML = `
+                        <div class="empty-state" style="grid-column: 1 / -1;">
+                            <div class="icon">⚠</div>
+                            <p>加载项目列表失败: ${err.message}</p>
+                        </div>
+                    `;
+                });
+        })();
+    </script>
+</body>
+</html>
