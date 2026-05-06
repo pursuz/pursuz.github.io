@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>丁培杰 — 后端/C++ 开发工程师</title>
+    <title>PURSUZ — 后端/C++ 开发工程师</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
@@ -631,6 +631,60 @@
             transform: translateX(4px);
         }
 
+        /* ====== View More Button ====== */
+        .view-more-container {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px 0;
+        }
+
+        .view-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            border: 1px solid rgba(0,240,255,0.25);
+            border-radius: 8px;
+            background: rgba(0,240,255,0.04);
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .view-more-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,240,255,0.08), transparent);
+            transition: left 0.5s;
+        }
+
+        .view-more-btn:hover {
+            border-color: rgba(0,240,255,0.5);
+            background: rgba(0,240,255,0.08);
+            box-shadow: 0 0 30px rgba(0,240,255,0.12);
+            transform: translateY(-2px);
+        }
+
+        .view-more-btn:hover::before {
+            left: 100%;
+        }
+
+        .view-more-arrow {
+            transition: transform 0.3s;
+        }
+
+        .view-more-btn:hover .view-more-arrow {
+            transform: translateX(6px);
+        }
+
         /* ====== Project Detail Overlay ====== */
         .project-detail-overlay {
             position: fixed;
@@ -1064,7 +1118,7 @@
 
     <!-- Navigation -->
     <nav>
-        <div class="nav-logo">&lt;DPJ /&gt;</div>
+        <div class="nav-logo">&lt;PURSUZ /&gt;</div>
         <ul class="nav-links">
             <li><a href="#skills">技能</a></li>
             <li><a href="#experience">经历</a></li>
@@ -1080,7 +1134,7 @@
             <div class="hero-avatar">
                 <span class="avatar-icon">⬡</span>
             </div>
-            <h1 class="hero-name">丁培杰</h1>
+            <h1 class="hero-name">PURSUZ</h1>
             <p class="hero-role">后端开发 · C++ 开发工程师</p>
             <div class="hero-tags">
                 <span class="hero-tag">C/C++</span>
@@ -1141,13 +1195,13 @@
             <div class="skill-card fade-in">
                 <div class="skill-icon">🗄️</div>
                 <div class="skill-title">MySQL / Redis</div>
-                <div class="skill-desc">熟练使用 CRUD 进行业务开发，拥有 MySQL 性能调优经验。研究过事务、索引与 InnoDB 存储引擎原理。Redis 缓存热数据。</div>
+                <div class="skill-desc">熟练使用 CRUD 进行业务开发，拥有 MySQL 性能调优经验。研究过事务、索引与 InnoDB 存储引擎原理。了解Redis持久化机制, 指令使用。</div>
                 <div class="skill-tags"><span>MySQL</span><span>InnoDB</span><span>Redis</span><span>调优</span></div>
             </div>
             <div class="skill-card fade-in">
                 <div class="skill-icon">🔧</div>
                 <div class="skill-title">底层组件</div>
-                <div class="skill-desc">实现过线程池、内存池、原子操作、RingBuffer、无锁队列、定时器、日志系统、内存泄漏检测、死锁检测，并应用于实际项目。</div>
+                <div class="skill-desc">实现过线程池、内存池、原子操作、RingBuffer、无锁队列、定时器、日志系统、内存泄漏检测、死锁检测,并应用于实际项目。</div>
                 <div class="skill-tags"><span>线程池</span><span>内存池</span><span>无锁队列</span><span>定时器</span></div>
             </div>
             <div class="skill-card fade-in">
@@ -1176,11 +1230,13 @@
                 </div>
                 <div class="timeline-role">C++ 开发工程师</div>
                 <ul class="timeline-desc">
-                    <li>负责 DLP4710 光机 Linux 内核驱动开发，Linux 最小内核移植与嵌入式开发环境部署</li>
+                    <li>负责 DLP4710 光机 Linux 内核驱动开发，Linux 最小内核移植与嵌入式运行环境，交叉编译工具链部署</li>
                     <li>负责服务器运维，管理 Docker 部署，维护服务器网络安全</li>
-                    <li>负责 3DAOI SDK 项目开发：PCL 点云算法 + OpenCV 检测 + YOLOv11 目标检测/图像分割 + OCR</li>
+                    <li>负责 3DAOI SDK 项目开发：PCL 点云算法 + OpenCV 检测 + YOLOv11 目标检测/图像分割 + 文字OCR</li>
                     <li>负责 3DAOI SDK 演示程序开发，使用 Qt 进行界面编写与美化</li>
-                    <li>负责设备服务项目：管理多家厂商相机与投影仪设备，提供 Windows 服务与开发库接口</li>
+                    <li>负责 2D晶圆检测, 达到业务指标要求,单晶粒检测200-300ms,并使用yolov11.onnx模型深度识别缺陷,达到准确率99%</li>  
+                    <li>负责设备库服务项目：管理多家厂商相机与投影仪设备，提供 Windows 服务与开发库接口,通过服务调度相机与投影仪,保证7x24小时运行无错</li>
+                    <li>负责 点云算法实现,使用pcl实现如橘皮、平面、坑洞抹平算法,多点云融合算法等</li>
                     <li>使用 GoogleTest 进行单元测试、集成测试等，编写测试方案文档</li>
                 </ul>
             </div>
@@ -1224,18 +1280,6 @@
         </div>
     </div>
 
-    <!-- Education -->
-    <section id="education">
-        <h2 class="section-title">教育背景</h2>
-        <div class="edu-card fade-in">
-            <div class="edu-icon">🎓</div>
-            <div>
-                <div class="edu-school">重庆电子科技职业大学</div>
-                <div class="edu-major">信息安全技术应用 · 专科</div>
-                <div class="edu-time">2021 — 2024 · 重庆</div>
-            </div>
-        </div>
-    </section>
 
     <!-- About -->
     <section id="about">
@@ -1257,7 +1301,7 @@
             <a href="mailto:746952078@qq.com">Email</a>
         </p>
         <p style="margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: rgba(0,240,255,0.3);">
-            &lt;/&gt; Designed by DPJ · 2026
+            &lt;/&gt; Designed by pursuz · 2026
         </p>
     </footer>
 
@@ -1392,9 +1436,13 @@
             const backBtn = document.getElementById('detailBack');
             let projects = [];
 
-            // 渲染项目列表
+            // 渲染项目列表（最多显示10个）
             function renderProjectList() {
-                projectListEl.innerHTML = projects.map((p, i) => `
+                const MAX_DISPLAY = 10;
+                const displayProjects = projects.slice(0, MAX_DISPLAY);
+                const hasMore = projects.length > MAX_DISPLAY;
+
+                projectListEl.innerHTML = displayProjects.map((p, i) => `
                     <div class="project-card clickable fade-in" data-id="${p.id}" style="animation-delay: ${i * 0.1}s">
                         <div class="project-header">
                             <div class="project-name">${p.name}</div>
@@ -1408,7 +1456,14 @@
                             查看详情 <span class="arrow">→</span>
                         </div>
                     </div>
-                `).join('');
+                `).join('') + (hasMore ? `
+                    <div class="view-more-container fade-in">
+                        <a href="all-projects.html" class="view-more-btn">
+                            <span>查看全部 ${projects.length} 个项目</span>
+                            <span class="view-more-arrow">→</span>
+                        </a>
+                    </div>
+                ` : '');
 
                 // 绑定点击事件
                 projectListEl.querySelectorAll('.project-card').forEach(card => {
