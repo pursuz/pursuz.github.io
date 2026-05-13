@@ -1,0 +1,182 @@
+[
+  {
+    "id": "3daoi-sdk",
+    "name": "3DAOI SDK",
+    "badge": "公司项目",
+    "badgeType": "company",
+    "summary": "基于 PCL 点云算法 + OpenCV + YOLOv11 的 3D 自动光学检测 SDK，实现 PCB 板焊点缺陷检测、OCR 文字识别与目标分割。",
+    "tech": ["C++", "PCL", "OpenCV", "YOLOv11", "Qt"],
+    "mdFile": "AOISDK.md"
+  },
+  {
+    "id": "3daoi-sdk-演示程序",
+    "name": "3DAOI SDK 演示程序",
+    "badge": "公司项目",
+    "badgeType": "company",
+    "summary": "AOISDK 的桌面演示程序：用于把 SDK 的调用流程、输入参数组织方式与输出结果展示做成可视化可复现的样例。",
+    "tech": ["C++", "Qt", "PCL", "OpenCV"],
+    "mdFile": "AOISDK-演示程序.md"
+  },
+  {
+    "id": "dlp4710-driver",
+    "name": "DLP 光机控制库",
+    "badge": "公司项目",
+    "badgeType": "company",
+    "summary": "面向 TI DLP 光机控制器的命令库与示例程序：通过 USB 与设备通信，完成设备信息读取、模式切换与固件升级等维护控制能力。",
+    "tech": ["C/C++", "USB", "Linux", "嵌入式"],
+    "mdFile": "DLPT.md"
+  },
+  {
+    "id": "device-service",
+    "name": "设备服务管理平台",
+    "badge": "公司项目",
+    "badgeType": "company",
+    "summary": "面向相机/投影仪等硬件的设备服务进程：把多厂商设备控制、触发与数据采集封装成统一服务，向上层应用提供稳定的取图/取点云/参数读写接口。",
+    "tech": ["C++", "Qt", "Windows Service", "SDK"],
+    "mdFile": "DeviceServer.md"
+  },
+  {
+    "id": "astar-pathfinding",
+    "name": "A* 寻路",
+    "badge": "学习项目",
+    "badgeType": "learning",
+    "summary": "A* 寻路算法实现：在网格地图与障碍约束下，计算从起点到终点的可行路径并输出路径坐标序列。",
+    "tech": ["C++", "算法", "A*"],
+    "mdFile": "A星寻路.md"
+  },
+  {
+    "id": "cloud-storage",
+    "name": "分布式云文件存储系统",
+    "badge": "个人项目",
+    "badgeType": "personal",
+    "summary": "基于 C++11 的高性能云图床后端服务，采用 Reactor 网络模型，支持高并发文件上传/下载/分享与短链访问等能力。",
+    "tech": ["C++", "Reactor", "HTTP", "存储"],
+    "mdFile": "cloud-storage.md"
+  },
+  {
+    "id": "desktop-pet",
+    "name": "DesktopPet 桌宠与桌面工具",
+    "badge": "个人项目",
+    "badgeType": "personal",
+    "summary": "Windows 桌宠与桌面工具集合：包含桌宠窗口、桌宠管理器、壁纸管理、桌面快捷方式分组透明框等功能。",
+    "tech": ["C++", "Windows", "桌面应用"],
+    "mdFile": "DesktopPet.md"
+  },
+  {
+    "id": "dpdk-notes",
+    "name": "DPDK 用户态网络实践",
+    "badge": "个人项目",
+    "badgeType": "personal",
+    "summary": "基于 DPDK 的用户态网络实践整理：覆盖从报文收发、基础协议处理到协议栈架构的原型验证与设计沉淀。",
+    "tech": ["C", "Linux", "DPDK"],
+    "mdFile": "DPDK.md"
+  },
+  {
+    "id": "kvstore-main",
+    "name": "KVStore（TCP）",
+    "badge": "个人项目",
+    "badgeType": "personal",
+    "summary": "基于 TCP 的内存型 KVStore：提供 SET/GET/DEL 等基础能力，支持多连接并发访问与命令解析响应。",
+    "tech": ["C++", "TCP", "KV"],
+    "mdFile": "kvstore-main.md"
+  },
+  {
+    "id": "sylar-master",
+    "name": "sylar-master（网络框架）",
+    "badge": "学习项目",
+    "badgeType": "learning",
+    "summary": "C++ 高性能服务器框架源码学习：协程调度、epoll I/O 管理、定时器以及 TCP/HTTP 等模块的工程化实现与组织方式。",
+    "tech": ["C++", "Linux", "epoll", "协程", "HTTP"],
+    "mdFile": "sylar-master.md"
+  },
+  {
+    "id": "mfc-window-skin",
+    "name": "MFC 窗口自绘美化",
+    "badge": "学习项目",
+    "badgeType": "learning",
+    "summary": "MFC 对话框自绘美化示例：以登录窗口风格为目标，用图片资源实现背景皮肤、自绘按钮与输入框图标。",
+    "tech": ["C++", "MFC", "GDI"],
+    "mdFile": "MFC的窗口自绘美化.md"
+  },
+  {
+    "id": "mfc-injection",
+    "name": "MFC 注入/骨架工程",
+    "badge": "学习项目",
+    "badgeType": "learning",
+    "summary": "MFC MDI 应用骨架工程：包含菜单/工具栏/状态栏与可停靠面板，可作为桌面工具类应用的 UI 框架基础。",
+    "tech": ["C++", "MFC", "Win32"],
+    "mdFile": "MFC注入.md"
+  },
+  {
+    "id": "qt-plane-war",
+    "name": "Qt 飞机大战",
+    "badge": "个人项目",
+    "badgeType": "personal",
+    "summary": "基于 Qt Widgets 的竖版飞行射击小游戏，实现从输入控制到渲染刷新、碰撞判定与动画反馈的完整闭环。",
+    "tech": ["C++", "Qt", "游戏"],
+    "mdFile": "Qt飞机大战.md"
+  },
+  {
+    "id": "shellcode-pack",
+    "name": "shellcode 加壳",
+    "badge": "学习项目",
+    "badgeType": "learning",
+    "summary": "Windows 系统编程与逆向学习示例：通过最小可运行样例理解 shellcode 自举执行、导出表解析与 API 动态解析思路。",
+    "tech": ["C/C++", "Windows", "PE"],
+    "mdFile": "shellcode加壳.md"
+  },
+  {
+    "id": "tc-src",
+    "name": "tc-src 图床/网盘后端",
+    "badge": "个人项目",
+    "badgeType": "personal",
+    "summary": "图床/网盘类后端服务：提供注册/登录、文件上传与分享等能力，支持把文件存入分布式存储并通过 HTTP 访问。",
+    "tech": ["C++", "Nginx", "MySQL", "Redis", "FastDFS"],
+    "mdFile": "tc-src.md"
+  },
+  {
+    "id": "pointcloud-algorithms",
+    "name": "点云算法合集",
+    "badge": "公司项目",
+    "badgeType": "company",
+    "summary": "面向 3D 采集与缺陷修复的点云算法合集：聚焦多次采集融合与指定区域抹平/修复等工程问题。",
+    "tech": ["C++", "PCL", "点云"],
+    "mdFile": "点云算法.md"
+  },
+  {
+    "id": "flight-booking",
+    "name": "航班订购系统",
+    "badge": "个人项目",
+    "badgeType": "personal",
+    "summary": "航班查询与预订演示系统：包含客户端与服务端桌面程序，覆盖航班管理、查询、订票/退票/改期与订单查看等核心业务。",
+    "tech": ["C++", "桌面应用", "网络"],
+    "mdFile": "航班订购系统.md"
+  },
+  {
+    "id": "global-hook",
+    "name": "Windows 全局钩子",
+    "badge": "学习项目",
+    "badgeType": "learning",
+    "summary": "Windows 全局钩子演示：通过 MFC 程序管理钩子 DLL 的安装与卸载，展示典型工程形态与生命周期管理。",
+    "tech": ["C++", "Windows", "Hook"],
+    "mdFile": "全局钩子使用.md"
+  },
+  {
+    "id": "water-wave-progress",
+    "name": "水波纹进度条",
+    "badge": "学习项目",
+    "badgeType": "learning",
+    "summary": "Qt 自定义控件：圆形水波纹进度条，用动效方式展示进度/占比，适用于下载、加载、仪表盘等场景。",
+    "tech": ["C++", "Qt", "自定义控件"],
+    "mdFile": "水波纹进度条.md"
+  },
+  {
+    "id": "remote-monitoring",
+    "name": "远程监控系统",
+    "badge": "个人项目",
+    "badgeType": "personal",
+    "summary": "Windows 远程监控演示系统：服务端查看客户端屏幕截图，并可下发退出/注销/重启/关机等控制命令。",
+    "tech": ["C++", "Windows", "Socket"],
+    "mdFile": "远程监控系统.md"
+  }
+]
