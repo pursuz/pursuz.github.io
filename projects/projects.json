@@ -38,8 +38,8 @@
   {
     "id": "astar-pathfinding",
     "name": "A* 寻路",
-    "badge": "个人项目",
-    "badgeType": "personal",
+    "badge": "学习项目",
+    "badgeType": "learning",
     "summary": "A* 寻路算法实现：在网格地图与障碍约束下，计算从起点到终点的可行路径并输出路径坐标序列。",
     "tech": ["C++", "算法", "A*"],
     "mdFile": "A星寻路.md"
