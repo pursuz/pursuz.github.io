@@ -1,4 +1,4 @@
-# 项目：kvstore
+# 项目：PURSUZ-KV
 
 ## 项目背景
 - 基于 TCP 的内存型 KVStore：提供 SET/GET/DEL 等基础能力，支持多连接并发访问与命令解析响应。
