@@ -12,8 +12,8 @@
 - 除桌宠外还包含桌面工具：壁纸管理（设置/恢复系统壁纸）与快捷方式分组透明框（扫描桌面快捷方式、双击启动、可拖动与持久化）。
 
 ## 前端界面
-![DesktopPet](./assets/Desktop-pet-1.png)
-![DesktopPet](./assets/Desktop-pet-2.png)
+![DesktopPet](projects/assets/Desktop-pet-1.png)
+![DesktopPet](projects/assets/Desktop-pet-2.png)
 
 ## 技术栈
 - 语言：C++17

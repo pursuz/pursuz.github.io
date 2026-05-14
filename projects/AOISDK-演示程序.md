@@ -12,7 +12,7 @@
 - UI 结构为三列：左侧原图交互与模板选择，中间预览与结果图，右侧器件类型与参数面板以及日志输出；该界面组织方式可直接迁移到 SDK 集成类工具中复用。
 
 ## 前端界面
-![AOISDK-演示程序](./assets/AOISDK-show.png)
+![AOISDK-演示程序](projects/assets/AOISDK-show.png)
 
 ## 技术栈
 - 语言：C++17

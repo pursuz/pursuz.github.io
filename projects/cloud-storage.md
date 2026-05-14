@@ -47,9 +47,9 @@
 - 内存池减少频繁分配开销
 
 ## 前端界面
-![CloudStorage](./assets/cloud-storage-1.png.png)
-![CloudStorage](./assets/cloud-storage-2.png.png)
-![CloudStorage](./assets/cloud-storage-3.png.png)
+![CloudStorage](projects/assets/cloud-storage-1.png.png)
+![CloudStorage](projects/assets/cloud-storage-2.png.png)
+![CloudStorage](projects/assets/cloud-storage-3.png.png)
 
 ## 技术栈
 

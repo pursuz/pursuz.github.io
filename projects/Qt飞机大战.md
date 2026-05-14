@@ -12,7 +12,7 @@
 - 资源使用 Qt 的 qrc 内嵌：图片通过资源路径加载，减少运行时路径依赖，便于分发与展示。
 
 ## 前端界面
-![飞机大战](./assets/PlaneFight.png)
+![飞机大战](projects/assets/PlaneFight.png)
 
 ## 技术栈
 - 语言：C++17

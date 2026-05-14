@@ -73,7 +73,7 @@
   },
   {
     "id": "kvstore-main",
-    "name": "KVStore（TCP）",
+    "name": "PURSUZ-KV",
     "badge": "个人项目",
     "badgeType": "personal",
     "summary": "基于 TCP 的内存型 KVStore：提供 SET/GET/DEL 等基础能力，支持多连接并发访问与命令解析响应。",
@@ -126,13 +126,13 @@
     "mdFile": "shellcode加壳.md"
   },
   {
-    "id": "tc-src",
-    "name": "tc-src 图床/网盘后端",
+    "id": "CloudStorage",
+    "name": "分布式云文件存储系统",
     "badge": "个人项目",
     "badgeType": "personal",
-    "summary": "图床/网盘类后端服务：提供注册/登录、文件上传与分享等能力，支持把文件存入分布式存储并通过 HTTP 访问。",
+    "summary": "云文件存储服务：提供注册/登录、文件上传与分享、短链生成等能力，支持把文件存入分布式存储并通过 HTTP 访问。",
     "tech": ["C++", "Nginx", "MySQL", "Redis", "FastDFS"],
-    "mdFile": "tc-src.md"
+    "mdFile": "cloud-storage.md"
   },
   {
     "id": "pointcloud-algorithms",
